@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Digit Recognizer - Neural Network Demo</title>
+    <meta name="description" content="Draw handwritten digits and see real-time predictions powered by a deep learning CNN model. View digit probabilities and raw model input.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-area">
+                <span class="logo-icon">🧠</span>
+                <div>
+                    <h1>Digit Recognizer</h1>
+                    <p class="subtitle">MNIST Digit Recognizer</p>
+                </div>
+            </div>
+            <div id="connection-status" class="status-badge offline">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking Connection...</span>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Left Column: Canvas and controls -->
+            <section class="card canvas-card">
+                <div class="card-header">
+                    <h2>Drawing Board</h2>
+                    <p class="card-subtitle">Draw a single digit (0-9) clearly in the center</p>
+                </div>
+                
+                <div class="canvas-container">
+                    <canvas id="canvas" width="280" height="280"></canvas>
+                    <div id="brush-preview"></div>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="control-row">
+                        <div class="btn-group tool-group">
+                            <button id="tool-draw" class="btn active" onclick="setTool('draw')" title="Draw Tool">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                                <span>Draw</span>
+                            </button>
+                            <button id="tool-erase" class="btn" onclick="setTool('erase')" title="Eraser Tool">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m20 20-5-5L9 20l-5-5L9 9l5 5-4 4Z"/><path d="M18 12 12 6l5-5 5 5-4 4Z"/></svg>
+                                <span>Erase</span>
+                            </button>
+                        </div>
+
+                        <div class="btn-group action-group">
+                            <button id="btn-undo" class="btn icon-btn" onclick="undo()" title="Undo (Ctrl+Z)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                            </button>
+                            <button id="btn-redo" class="btn icon-btn" onclick="redo()" title="Redo (Ctrl+Y)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/></svg>
+                            </button>
+                            <button class="btn icon-btn danger" onclick="clearCanvas()" title="Clear Drawing">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="slider-row">
+                        <label for="brush-size">Brush Size</label>
+                        <div class="slider-container">
+                            <input type="range" id="brush-size" min="8" max="28" value="16" oninput="updateBrushSize(this.value)">
+                            <span id="brush-size-val">16px</span>
+                        </div>
+                    </div>
+
+                    <div class="toggle-row">
+                        <span class="toggle-label">Real-time Auto Prediction</span>
+                        <label class="switch">
+                            <input type="checkbox" id="auto-predict" checked onchange="toggleAutoPredict(this.checked)">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <button id="predict-btn" class="btn primary-btn hidden" onclick="predictManual()">
+                        <span>Analyze Digit</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Column: Results -->
+            <section class="card results-card">
+                <div class="card-header">
+                    <h2>Neural Network Analysis</h2>
+                    <p class="card-subtitle">Real-time predictions & model confidence</p>
+                </div>
+
+                <div class="results-layout">
+                    <!-- Top section: Primary prediction -->
+                    <div class="primary-prediction-container">
+                        <div class="prediction-large">
+                            <div class="prediction-ring">
+                                <span id="first-guess">-</span>
+                            </div>
+                            <div class="prediction-meta">
+                                <span class="label">Top Guess</span>
+                                <span id="confidence-val" class="value">0.0%</span>
+                            </div>
+                        </div>
+
+                        <div class="prediction-secondary">
+                            <div class="second-guess-row">
+                                <span class="label">Runner Up:</span>
+                                <span id="second-guess" class="value">-</span>
+                            </div>
+                            <div class="model-viewport">
+                                <span class="viewport-label">Model Input (28x28)</span>
+                                <div class="viewport-canvas-wrapper">
+                                    <canvas id="viewport-canvas" width="28" height="28"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom section: Probability list -->
+                    <div class="probabilities-container">
+                        <h3>Probability Distribution</h3>
+                        <div id="probability-bars" class="probability-bars">
+                            <!-- JS will dynamically populate 10 bars -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
