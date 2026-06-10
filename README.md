@@ -1,4 +1,4 @@
-# 🧠 AI Digit Recognizer
+# 🧠 Digit Recognizer
 
 > A real-time handwritten digit recognition web app powered by a deep learning CNN model trained on the MNIST dataset.
 
