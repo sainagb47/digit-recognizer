@@ -1,4 +1,4 @@
-const API_BASE = "https://digit-recognizer-api-0gft.onrender.com";
+const API_BASE = "http://127.0.0.1:5000";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 const viewportCanvas = document.getElementById("viewport-canvas");
