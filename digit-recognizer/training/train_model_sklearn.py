@@ -5,10 +5,11 @@ from sklearn.neural_network import MLPClassifier
 import joblib
 
 def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(script_dir)  # digit-recognizer/
     print("Checking for MNIST dataset...")
-    data_path = "training/mnist.npz"
+    data_path = os.path.join(script_dir, "mnist.npz")
     if not os.path.exists(data_path):
-        os.makedirs("training", exist_ok=True)
         url = "https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz"
         print(f"Downloading MNIST from {url}...")
         urllib.request.urlretrieve(url, data_path)
@@ -51,8 +52,9 @@ def main():
     print(f"Test accuracy: {test_acc * 100:.2f}%")
     
     print("Saving model to backend/model.joblib...")
-    os.makedirs("backend", exist_ok=True)
-    joblib.dump(mlp, "backend/model.joblib")
+    backend_dir = os.path.join(root_dir, "backend")
+    os.makedirs(backend_dir, exist_ok=True)
+    joblib.dump(mlp, os.path.join(backend_dir, "model.joblib"))
     print("Model saved successfully!")
 
 if __name__ == "__main__":

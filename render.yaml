@@ -2,9 +2,9 @@ services:
   - type: web
     name: digit-recognizer-api
     runtime: python
-    rootDir: digit-recognizer/backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    rootDir: digit-recognizer
+    buildCommand: pip install -r backend/requirements.txt && cd training && python train_model_sklearn.py && cd ..
+    startCommand: gunicorn --chdir backend app:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
