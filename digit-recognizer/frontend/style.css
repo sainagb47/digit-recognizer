@@ -1,0 +1,295 @@
+:root {
+    /* Glassmorphism Variables */
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.4);
+    --card-border-top: rgba(255, 255, 255, 0.15);
+    --card-border-bottom: rgba(0, 0, 0, 0.3);
+    
+    /* Neomorphism / Skeuomorphism Variables */
+    --neo-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4), -8px -8px 16px rgba(255, 255, 255, 0.05);
+    --neo-inset: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    --neo-btn-bg: linear-gradient(135deg, #1e293b, #0f172a);
+    --neo-btn-hover: linear-gradient(135deg, #273449, #151e32);
+    --neo-btn-active: inset 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+    
+    /* Colors */
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --primary: #6366f1;
+    --primary-glow: rgba(99, 102, 241, 0.5);
+    --secondary: #ec4899;
+    --secondary-glow: rgba(236, 72, 153, 0.5);
+    --accent: #10b981;
+    --danger: #ef4444;
+    --canvas-bg: #000;
+    
+    /* Radius */
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Glassmorphism Background Glows */
+.app-background {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+}
+
+.glow-orb {
+    position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.6; animation: float 10s infinite alternate ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-30px) scale(1.1); }
+}
+
+.orb-1 { top: -10%; left: 0%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%); }
+.orb-2 { bottom: -10%; right: 0%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(236, 72, 153, 0.4) 0%, transparent 70%); }
+.orb-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%); position: absolute; border-radius: 50%; filter: blur(100px); z-index: -1;}
+
+.container { width: 100%; max-width: 1100px; padding: 40px 20px; display: flex; flex-direction: column; gap: 40px; }
+
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 30px;
+    background: var(--card-bg);
+    border-top: 1px solid var(--card-border-top);
+    border-left: 1px solid var(--card-border-top);
+    border-right: 1px solid var(--card-border-bottom);
+    border-bottom: 1px solid var(--card-border-bottom);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--neo-shadow);
+}
+
+.logo-area { display: flex; align-items: center; gap: 15px; }
+.logo-icon { font-size: 38px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+h1 { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+.subtitle { font-size: 14px; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Skeuomorphic Status Badge */
+.status-badge {
+    display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 30px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    background: var(--neo-btn-bg);
+    box-shadow: var(--neo-inset);
+    border: 1px solid rgba(0,0,0,0.5);
+}
+.status-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.4), inset -1px -1px 2px rgba(0,0,0,0.4); }
+.status-badge.online .status-dot { background-color: var(--accent); box-shadow: 0 0 10px var(--accent), inset 2px 2px 4px rgba(255,255,255,0.6); animation: pulse 2s infinite; }
+.status-badge.offline .status-dot { background-color: var(--danger); box-shadow: 0 0 10px var(--danger), inset 2px 2px 4px rgba(255,255,255,0.6); }
+
+@keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+/* Glassmorphism & Skeuomorphism Cards */
+.dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+@media (max-width: 900px) { .dashboard { grid-template-columns: 1fr; } }
+
+.card {
+    background: var(--card-bg);
+    border-top: 1px solid var(--card-border-top);
+    border-left: 1px solid var(--card-border-top);
+    border-bottom: 1px solid var(--card-border-bottom);
+    border-right: 1px solid var(--card-border-bottom);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--neo-shadow);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 35px;
+    display: flex; flex-direction: column; gap: 30px;
+}
+
+.card-header h2 { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 700; color: var(--text-primary); text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.card-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 6px; }
+
+/* Skeuomorphic Drawing Board */
+.canvas-container {
+    position: relative; align-self: center; border-radius: var(--radius-md); overflow: hidden;
+    background-color: var(--canvas-bg); cursor: none;
+    padding: 10px; /* frame padding */
+    background: linear-gradient(135deg, #2a364f, #0f172a);
+    box-shadow: var(--neo-shadow);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px solid rgba(255,255,255,0.1);
+}
+
+#canvas {
+    display: block; border-radius: 8px; box-shadow: var(--neo-inset);
+    background-color: #000;
+}
+
+#brush-preview { position: absolute; border: 2px solid rgba(255, 255, 255, 0.9); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); display: none; box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 4px rgba(0,0,0,0.5); mix-blend-mode: difference; z-index: 10; }
+
+.controls-panel { display: flex; flex-direction: column; gap: 25px; }
+.control-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+
+.btn-group {
+    display: flex; gap: 10px; padding: 8px; border-radius: var(--radius-md);
+    background: var(--neo-btn-bg);
+    box-shadow: var(--neo-inset);
+    border: 1px solid rgba(0,0,0,0.3);
+}
+
+/* Skeuomorphic Buttons */
+.btn {
+    background: var(--neo-btn-bg);
+    border: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    padding: 12px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.3), -4px -4px 8px rgba(255,255,255,0.05);
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.btn:hover { background: var(--neo-btn-hover); color: var(--text-primary); }
+.btn:active, .btn.active {
+    background: var(--neo-btn-bg);
+    box-shadow: var(--neo-btn-active);
+    color: var(--primary);
+    border: 1px solid rgba(0,0,0,0.5);
+}
+.btn.active { color: var(--primary); text-shadow: 0 0 8px var(--primary-glow); }
+.btn.danger:active { color: var(--danger); text-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
+.icon-btn { padding: 12px; aspect-ratio: 1; }
+
+/* Skeuomorphic Sliders */
+.slider-row { display: flex; flex-direction: column; gap: 12px; }
+.slider-row label { font-size: 14px; font-weight: 700; color: var(--text-secondary); text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.slider-container { display: flex; align-items: center; gap: 15px; }
+
+.slider-container input[type="range"] {
+    flex: 1; -webkit-appearance: none; appearance: none; height: 12px; border-radius: 6px;
+    background: var(--neo-btn-bg); box-shadow: var(--neo-inset); outline: none;
+    border: 1px solid rgba(0,0,0,0.4);
+}
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5), inset 2px 2px 4px rgba(255,255,255,0.8);
+    border: 1px solid rgba(0,0,0,0.2);
+    transition: transform 0.1s;
+}
+.slider-container input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+#brush-size-val { font-size: 14px; font-weight: 800; color: var(--text-primary); min-width: 45px; text-align: right; background: var(--neo-btn-bg); padding: 8px; border-radius: 8px; box-shadow: var(--neo-inset); }
+
+/* Skeuomorphic Toggles */
+.toggle-row { display: flex; justify-content: space-between; align-items: center; padding-top: 15px; }
+.toggle-label { font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+.switch { position: relative; display: inline-block; width: 56px; height: 30px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider.round {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--neo-btn-bg); transition: .4s; border-radius: 30px;
+    box-shadow: var(--neo-inset); border: 1px solid rgba(0,0,0,0.5);
+}
+.slider.round:before {
+    position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 3px;
+    background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+    transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-radius: 50%;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5), inset 2px 2px 4px rgba(255,255,255,0.8);
+}
+.switch input:checked + .slider { background-color: rgba(99, 102, 241, 0.2); border-color: var(--primary); box-shadow: inset 2px 2px 6px rgba(0,0,0,0.4), 0 0 10px var(--primary-glow); }
+.switch input:checked + .slider:before { transform: translateX(26px); background: linear-gradient(135deg, #a5b4fc, #6366f1); }
+
+/* Primary CTA */
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+    color: white; justify-content: center; padding: 16px; border-radius: var(--radius-sm);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4), inset 2px 2px 4px rgba(255,255,255,0.3);
+    font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border: none;
+}
+.primary-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(99, 102, 241, 0.5), inset 2px 2px 4px rgba(255,255,255,0.3); }
+.primary-btn:active { transform: translateY(2px); box-shadow: var(--neo-btn-active); background: var(--primary); }
+.hidden { display: none !important; }
+
+/* Results Component */
+.results-layout { display: flex; flex-direction: column; gap: 35px; }
+
+.primary-prediction-container {
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 25px;
+    background: var(--neo-btn-bg); box-shadow: var(--neo-inset);
+    padding: 25px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.3);
+}
+
+.prediction-large { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+
+/* Glass ring skeuomorphic */
+.prediction-ring {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 8px 8px 16px rgba(0,0,0,0.4), -8px -8px 16px rgba(255,255,255,0.05), inset 4px 4px 8px rgba(255,255,255,0.05), inset -4px -4px 8px rgba(0,0,0,0.4);
+    display: flex; justify-content: center; align-items: center; position: relative;
+}
+.prediction-ring::after {
+    content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border-radius: 50%; border: 3px solid var(--primary); box-shadow: 0 0 15px var(--primary-glow), inset 0 0 15px var(--primary-glow);
+}
+.prediction-ring span { font-family: 'Outfit', sans-serif; font-size: 64px; font-weight: 800; color: #fff; line-height: 1; z-index: 1; text-shadow: 0 0 20px var(--primary-glow); }
+
+.prediction-meta { text-align: center; background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 20px; box-shadow: var(--neo-inset); }
+.prediction-meta .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 700; }
+.prediction-meta .value { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px; display: block; text-shadow: 0 0 10px var(--primary-glow); }
+
+.prediction-secondary { display: flex; flex-direction: column; gap: 20px; }
+
+.second-guess-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--neo-btn-bg); box-shadow: 4px 4px 8px rgba(0,0,0,0.3), -4px -4px 8px rgba(255,255,255,0.05);
+    padding: 12px 18px; border-radius: 12px; font-size: 15px; border: 1px solid rgba(255,255,255,0.05);
+}
+.second-guess-row .label { color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;}
+.second-guess-row .value { font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--secondary); text-shadow: 0 0 10px var(--secondary-glow); font-size: 18px;}
+
+.model-viewport { display: flex; flex-direction: column; gap: 10px; align-items: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; box-shadow: var(--neo-inset); }
+.viewport-label { font-size: 12px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.viewport-canvas-wrapper {
+    width: 68px; height: 68px; border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: #000; display: flex; justify-content: center; align-items: center; overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+#viewport-canvas { width: 100%; height: 100%; image-rendering: pixelated; }
+
+/* Probabilities List Skeuomorphic */
+.probabilities-container { background: var(--neo-btn-bg); padding: 25px; border-radius: var(--radius-md); box-shadow: var(--neo-inset); border: 1px solid rgba(0,0,0,0.3); }
+.probabilities-container h3 { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.probability-bars { display: flex; flex-direction: column; gap: 15px; }
+.prob-row { display: flex; align-items: center; gap: 15px; }
+.prob-digit { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; color: var(--text-secondary); width: 20px; text-align: center; background: rgba(0,0,0,0.2); border-radius: 6px; padding: 4px 0; box-shadow: var(--neo-inset); }
+.prob-bar-wrapper { flex: 1; height: 16px; background: rgba(0,0,0,0.4); border-radius: 8px; overflow: hidden; box-shadow: var(--neo-inset); border: 1px solid rgba(255,255,255,0.05); }
+.prob-bar-fill {
+    height: 100%; width: 0%; border-radius: 8px;
+    background: linear-gradient(90deg, #312e81, var(--primary));
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2);
+    transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.prob-row.top-probability .prob-bar-fill { background: linear-gradient(90deg, var(--secondary), var(--accent)); box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 0 10px var(--accent); }
+.prob-val { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-secondary); min-width: 50px; text-align: right; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 6px; box-shadow: var(--neo-inset); }
+
+.prob-row.top-probability .prob-digit, .prob-row.top-probability .prob-val { color: var(--accent); text-shadow: 0 0 5px rgba(16, 185, 129, 0.4); }
+
+footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; border: 2px solid var(--bg-color); }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
