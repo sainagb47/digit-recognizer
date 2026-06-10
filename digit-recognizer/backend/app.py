@@ -26,6 +26,9 @@ if model is None:
     try:
         import joblib
         model_path = os.path.join(os.path.dirname(__file__), "model.joblib")
+        print(f"Looking for model at: {model_path}")
+        print(f"File exists: {os.path.exists(model_path)}")
+        print(f"Files in dir: {os.listdir(os.path.dirname(__file__))}")
         if os.path.exists(model_path):
             model = joblib.load(model_path)
             model_type = "sklearn"
