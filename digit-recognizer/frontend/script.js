@@ -1,4 +1,4 @@
-// Elements
+const API_BASE = "https://digit-recognizer-api-0gft.onrender.com";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
 const viewportCanvas = document.getElementById("viewport-canvas");
@@ -243,7 +243,7 @@ function predict() {
 
     const image = canvas.toDataURL("image/png");
     
-    fetch("http://127.0.0.1:5000/predict", {
+    fetch(`${API_BASE}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: image })
@@ -323,7 +323,7 @@ function updateConnectionStatus(isConnected) {
 }
 
 function checkServerHealth() {
-    fetch("http://127.0.0.1:5000/predict", {
+    fetch(`${API_BASE}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAFUlEQVR42mNkWPifwEgoGCkqHGmOADcECV5a5zoVAAAAAElFTkSuQmCC" })
